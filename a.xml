@@ -7,19 +7,30 @@
 <AMFCapabilityProfile>
 <TransportCapabilitiesList>
 <TransportProtocolMode>TCP</TransportProtocolMode>
+<TransportProtocolMode>UDP</TransportProtocolMode>
 </TransportCapabilitiesList>
 <SecurityCapabilities>
+<CryptographicProtocol> TLS </CryptographicProtocol>
 </SecurityCapabilities>
 <PermissionOperationModes>
+<PermissionMode>Internal</PermissionMode>
 </PermissionOperationModes>
 <ConfigurationPackageDelivery>
+<ConfigurationMode> Push </ConfigurationMode>
 </ConfigurationPackageDelivery>
 <MeasurementTriggerMethod>
+<EventTrigger> VideoResize </EventTrigger>
+<EventTrigger> VideoResize </EventTrigger>
+<TimeSampleTrigger> UserPresent </TimeSampleTrigger>
+<TimeSampleTrigger> TDLocation </TimeSampleTrigger>
+<ServiceStartTrigger> UserList </ServiceStartTrigger>
 </MeasurementTriggerMethod>
 <ReportDeliveryModes>
+<DeliveryMode> ImmediatePush </DeliveryMode>
 </ReportDeliveryModes>
 <OperationalManagementCapabilities>
 <OperationalManagement>
+Acknowledgements
 </OperationalManagement>
 </OperationalManagementCapabilities>
 <Compression>

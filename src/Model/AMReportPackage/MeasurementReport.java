@@ -16,7 +16,7 @@ public class MeasurementReport {
 
     private int measurementRequestID;
     private Timestamp measurementReportTriggerTime;
-    private boolean displayStatus;
+    private String displayStatus;
     private AudioFocus audioFocus;
     private CaptionLanguageChange captionLanguageChange;
     private AudioLanguageChange audioLanguageChange;
@@ -66,14 +66,14 @@ public class MeasurementReport {
     /**
      * @return the displayStatus
      */
-    public boolean isDisplayStatus() {
+    public String isDisplayStatus() {
         return displayStatus;
     }
 
     /**
      * @param displayStatus the displayStatus to set
      */
-    public void setDisplayStatus(boolean displayStatus) {
+    public void setDisplayStatus(String displayStatus) {
         this.displayStatus = displayStatus;
     }
 

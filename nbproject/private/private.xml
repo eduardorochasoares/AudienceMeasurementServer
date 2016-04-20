@@ -14,7 +14,6 @@
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/DAO/DeliveryModeDAO.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/CaptionLanguageChange.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/OperationalManagementCapabilities.java</file>
-            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/IPTVTVInformation.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/DAO/CompressionDAO.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/TransportProtocolMode.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/MeasurementTriggerMethod.java</file>
@@ -25,6 +24,7 @@
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/Compression.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/AudioVolume.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/STBInformation.java</file>
+            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/ServiceStartTrigger.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/SecurityCapabilities.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/UserID.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/MeasurementRequest/AllChannelsExceptList.java</file>
@@ -34,7 +34,6 @@
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/MeasurementRequest/PriorityServiceStart.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/AudioAmplifierInformation.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/IPTVTVInformation.java</file>
-            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/EndUserElementsXML.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/ConfigPackageRequest.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/DAO/OperationalManagementDAO.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/DAO/ConfigurationModeDAO.java</file>
@@ -51,6 +50,8 @@
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/DAO/ServiceStartTriggerDAO.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/ErrorMessageXML/ConfigRequestErrorInfo.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/UserIDGenericInfo.java</file>
+            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/MeasurementReportRequestXML/MeasurementReportRequest.java</file>
+            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMFConfigPackage/AMFConfigPackage.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/MeasurementReport.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/StorageCongestionImpactedService.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/MeasurementRequest/MeasurementRequest.java</file>
@@ -70,7 +71,6 @@
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/PCInformation.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/GenericUserInfo.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/MeasurementRequest/ContentClassDomain.java</file>
-            <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/AMReportPackage.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/tdElementsXML/PermissionOperationModes.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/DeviceInformation.java</file>
             <file>file:/C:/Users/Principal/Documents/NetBeansProjects/AudienceMeasurementServer/src/Model/AMReportPackage/TVInformation.java</file>

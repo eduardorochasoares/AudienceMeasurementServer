@@ -60,4 +60,18 @@ public class AMReportPackage {
     public void setStorageCongestionImpactedService(ArrayList<StorageCongestionImpactedService> storageCongestionImpactedService) {
         this.storageCongestionImpactedService = storageCongestionImpactedService;
     }
+
+    /**
+     * @return the measurementReports
+     */
+    public ArrayList<MeasurementReport> getMeasurementReports() {
+        return measurementReports;
+    }
+
+    /**
+     * @param measurementReports the measurementReports to set
+     */
+    public void setMeasurementReports(ArrayList<MeasurementReport> measurementReports) {
+        this.measurementReports = measurementReports;
+    }
 }

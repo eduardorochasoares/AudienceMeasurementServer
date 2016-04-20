@@ -29,7 +29,7 @@ public class MySQLConnection {
             String driverName = "com.mysql.jdbc.Driver";
             Class.forName(driverName); // Configurando a nossa conexão com um banco de dados// 
             String serverName = "localhost"; //caminho do servidor do BD 
-            String mydatabase = "maiptv"; //nome do seu banco de dados 
+            String mydatabase = "audiencemeasurement"; //nome do seu banco de dados 
             String url = "jdbc:mysql://" + serverName + "/" + mydatabase + "?autoReconnect=true&useSSL=false?autoReconnect=true&useSSL=false";
             String username = "root"; //nome de um usuário de seu BD 
             String password = "root"; //sua senha de acesso 

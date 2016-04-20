@@ -19,7 +19,6 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import Model.tdElementsXML.EndUserElementsXML;
 
 /**
  *
@@ -78,7 +77,7 @@ public class Error {
         try {
             transformer = transformerFactory.newTransformer();
         } catch (TransformerConfigurationException ex) {
-            Logger.getLogger(EndUserElementsXML.class.getName()).log(Level.SEVERE, null, ex);
+            
         }
         DOMSource source = new DOMSource(doc);
         StreamResult result
@@ -86,7 +85,7 @@ public class Error {
         try {
             transformer.transform(source, result);
         } catch (TransformerException ex) {
-            Logger.getLogger(EndUserElementsXML.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
         // Output to console for testing
         StreamResult consoleResult
@@ -94,7 +93,7 @@ public class Error {
         try {
             transformer.transform(source, consoleResult);
         } catch (TransformerException ex) {
-            Logger.getLogger(EndUserElementsXML.class.getName()).log(Level.SEVERE, null, ex);
+           
         }
     }
 
