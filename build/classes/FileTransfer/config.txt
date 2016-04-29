@@ -1,0 +1,6 @@
+#TransportProtocol:TCP
+#CryptographicProtocol:TLS
+#PermissionMode:Internal
+#ConfigurationMode:Pull,Hybrid
+#DeliveryMode:ImmediatePush
+#Compression:None

@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  *
  * @author Principal
  */
-public class ControlledUserInfoDate {
+public class ControlledUserInfoDate extends ControlledUserInfo {
     private Timestamp controlledUserInfoDateValue;
 
     /**

@@ -15,6 +15,7 @@ public class DeviceInformation {
     private AudioAmplifierInformation audioAmpli;
     private TVInformation tvInfo;
     private STBInformation stb;
+    private IPTVTVInformation iptvInfo;
 
     /**
      * @return the m
@@ -84,6 +85,20 @@ public class DeviceInformation {
      */
     public void setStb(STBInformation stb) {
         this.stb = stb;
+    }
+
+    /**
+     * @return the iptvInfo
+     */
+    public IPTVTVInformation getIptvInfo() {
+        return iptvInfo;
+    }
+
+    /**
+     * @param iptvInfo the iptvInfo to set
+     */
+    public void setIptvInfo(IPTVTVInformation iptvInfo) {
+        this.iptvInfo = iptvInfo;
     }
     
 }

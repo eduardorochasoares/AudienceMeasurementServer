@@ -12,4 +12,32 @@ package Model.AMReportPackage;
 public class UserID {
     private String anonUserID;
     private String userID;
+
+    /**
+     * @return the anonUserID
+     */
+    public String getAnonUserID() {
+        return anonUserID;
+    }
+
+    /**
+     * @param anonUserID the anonUserID to set
+     */
+    public void setAnonUserID(String anonUserID) {
+        this.anonUserID = anonUserID;
+    }
+
+    /**
+     * @return the userID
+     */
+    public String getUserID() {
+        return userID;
+    }
+
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
 }

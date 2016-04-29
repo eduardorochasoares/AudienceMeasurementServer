@@ -34,6 +34,9 @@ public class MeasurementReport {
     private ArrayList<UserIDGenericInfo> genericUserInfo;
     private UserInfoChange userInfoChange;
     private PermitBlockedInfo permitBlockedInfo;
+    private ChannelStart channelStart;
+    private ChannelStop channelStop;
+    private ArrayList<ChannelPlaying> channelPlaying = new ArrayList<>();
 
     /**
      * @return the measurementRequestID
@@ -313,6 +316,48 @@ public class MeasurementReport {
      */
     public void setPermitBlockedInfo(PermitBlockedInfo permitBlockedInfo) {
         this.permitBlockedInfo = permitBlockedInfo;
+    }
+
+    /**
+     * @return the channelStart
+     */
+    public ChannelStart getChannelStart() {
+        return channelStart;
+    }
+
+    /**
+     * @param channelStart the channelStart to set
+     */
+    public void setChannelStart(ChannelStart channelStart) {
+        this.channelStart = channelStart;
+    }
+
+    /**
+     * @return the channelStop
+     */
+    public ChannelStop getChannelStop() {
+        return channelStop;
+    }
+
+    /**
+     * @param channelStop the channelStop to set
+     */
+    public void setChannelStop(ChannelStop channelStop) {
+        this.channelStop = channelStop;
+    }
+
+    /**
+     * @return the channelPlaying
+     */
+    public ArrayList<ChannelPlaying> getChannelPlaying() {
+        return channelPlaying;
+    }
+
+    /**
+     * @param channelPlaying the channelPlaying to set
+     */
+    public void setChannelPlaying(ArrayList<ChannelPlaying> channelPlaying) {
+        this.channelPlaying = channelPlaying;
     }
 
 }
