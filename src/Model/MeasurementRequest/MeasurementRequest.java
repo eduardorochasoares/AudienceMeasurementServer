@@ -29,12 +29,7 @@ public class MeasurementRequest {
     private List<MeasurementSchedule> measurementSchedule = new ArrayList<>();
     private MeasurementDeliverySchedule measurementDeliverySchedule;
 
-    public MeasurementRequest(LinearTVQualifier linearTVQualifier
-    ) {
-        this.measurementRequestID = measurementRequestID;
-        this.linearTVQualifier = linearTVQualifier;
-
-    }
+   
 
     /**
      * @return the measurementRequestID
@@ -218,7 +213,7 @@ public class MeasurementRequest {
                 for (Event e : et.getEvent()) {
                     Element event = doc.createElement("Event");
                     eventTrigger.appendChild(event);
-                    event.appendChild(doc.createTextNode(e.getEventValue().getEvent()));
+                    event.appendChild(doc.createTextNode(e.getEvent()));
                     Element son = doc.createElement("EventParameter1");
                     event.appendChild(son);
                     son.appendChild(doc.createTextNode(e.getEventParameter1()));
@@ -237,7 +232,7 @@ public class MeasurementRequest {
                     Element sampleSet = doc.createElement("SampleSet");
                     timeTrigger.appendChild(sampleSet);
                     Element ssi = doc.createElement("SampleSetIdentifier");
-                    ssi.appendChild(doc.createTextNode(sstt.getSampleSetIdentifier().getIdentifier()));
+                    ssi.appendChild(doc.createTextNode(sstt.getSampleSetIdentifier()));
                     sampleSet.appendChild(ssi);
                     for (SampleSetQualifierTimeTrigger s : sstt.getSampleSetQualifierTimeTrigger()) {
                         Element ssq = doc.createElement("SampleSetQualifier");

@@ -10,7 +10,7 @@ package Model.MeasurementRequest;
  * @author Principal
  */
 public class Event {
-    private EventValue eventValue;
+    private String event;
     private String eventParameter1;
 
     /**
@@ -33,17 +33,19 @@ public class Event {
     }
 
     /**
-     * @return the eventValue
+     * @return the event
      */
-    public EventValue getEventValue() {
-        return eventValue;
+    public String getEvent() {
+        return event;
     }
 
     /**
-     * @param eventValue the eventValue to set
+     * @param event the event to set
      */
-    public void setEventValue(EventValue eventValue) {
-        this.eventValue = eventValue;
+    public void setEvent(String event) {
+        this.event = event;
     }
+
+   
     
 }

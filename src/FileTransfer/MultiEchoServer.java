@@ -12,6 +12,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -24,7 +25,7 @@ public class MultiEchoServer {
     public static void main(String[] args) {
         while (true) {
             try {
-                ServerSocket server = new ServerSocket(8009);
+                ServerSocket server = new ServerSocket(8009,0, InetAddress.getByName("::1"));
                 Socket clSocket = server.accept();
                 new ClientHandler(clSocket).start();
 

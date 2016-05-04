@@ -13,22 +13,10 @@ import java.util.List;
  * @author Principal
  */
 public class SampleSetTimeTrigger {
-    private SampleSetIdentifierTimeTrigger sampleSetIdentifier;
+    private String sampleSetIdentifier;
     private List<SampleSetQualifierTimeTrigger> sampleSetQualifierTimeTrigger = new ArrayList<>();
 
-    /**
-     * @return the sampleSetIdentifier
-     */
-    public SampleSetIdentifierTimeTrigger getSampleSetIdentifier() {
-        return sampleSetIdentifier;
-    }
-
-    /**
-     * @param sampleSetIdentifier the sampleSetIdentifier to set
-     */
-    public void setSampleSetIdentifier(SampleSetIdentifierTimeTrigger sampleSetIdentifier) {
-        this.sampleSetIdentifier = sampleSetIdentifier;
-    }
+   
 
     /**
      * @return the sampleSetQualifierTimeTrigger
@@ -42,6 +30,20 @@ public class SampleSetTimeTrigger {
      */
     public void setSampleSetQualifierTimeTrigger(List<SampleSetQualifierTimeTrigger> sampleSetQualifierTimeTrigger) {
         this.sampleSetQualifierTimeTrigger = sampleSetQualifierTimeTrigger;
+    }
+
+    /**
+     * @return the sampleSetIdentifier
+     */
+    public String getSampleSetIdentifier() {
+        return sampleSetIdentifier;
+    }
+
+    /**
+     * @param sampleSetIdentifier the sampleSetIdentifier to set
+     */
+    public void setSampleSetIdentifier(String sampleSetIdentifier) {
+        this.sampleSetIdentifier = sampleSetIdentifier;
     }
 
     

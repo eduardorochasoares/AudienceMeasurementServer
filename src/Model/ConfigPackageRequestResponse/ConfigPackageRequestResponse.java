@@ -35,14 +35,6 @@ public class ConfigPackageRequestResponse {
     private Element raiz;
     private static DocumentBuilderFactory docFactory;
 
-    public ConfigPackageRequestResponse(Directive immediateMeasurementDirective,
-            Directive futureMeasurementDirective, int configurationPackageCheckDelay) {
-        this.immediateMeasurementDirective = immediateMeasurementDirective;
-        this.futureMeasurementDirective = futureMeasurementDirective;
-        this.configurationPackageCheckDelay = configurationPackageCheckDelay;
-
-    }
-
     public void createConfigPkgRequestResponseXML() {
 
         docFactory = DocumentBuilderFactory.newInstance();
