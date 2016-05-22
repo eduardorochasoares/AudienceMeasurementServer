@@ -53,7 +53,7 @@ public class AMFCapabProfileDAO {
 
         } catch (SQLException ex) {
 
-            Logger.getLogger(ConfigPackageRequestDAO.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
             return false;
         }
 

@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class ConfigPackageRequestDAO {
 
-    public boolean insertConfigPkg(ConfigPackageRequest config) {
+    public int insertConfigPkg(ConfigPackageRequest config) {
         Connection conn = MySQLConnection.getConexaoMySQL();
         String sql;
         try {
@@ -40,19 +40,20 @@ public class ConfigPackageRequestDAO {
             AMFCapabilityProfile amf = config.getAmf();
             if (rs.next()) {
                 if (new AMFCapabProfileDAO().insertAMFCapab(amf, rs.getInt(1), conn)) {
+                    int chave = rs.getInt(1);
                     conn.close();
-                    return true;
+                   return chave;
                 } else {
-                    return false;
+                    return -1;
                 }
             } else {
-                return false;
+                return -1;
             }
 
         } catch (SQLException ex) {
 
             Logger.getLogger(ConfigPackageRequestDAO.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
+            return -1;
         }
 
     }

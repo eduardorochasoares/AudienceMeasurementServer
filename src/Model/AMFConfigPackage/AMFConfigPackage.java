@@ -79,7 +79,7 @@ public class AMFConfigPackage {
 
     public Element createAmfConfig(Document doc, Element principal) {
         setRoot(doc.createElement("AMFConfigPackage"));
-        
+
         principal.appendChild(getRoot());
         addAmfConfig(doc);
         addUserPermitInfo(doc);
@@ -93,6 +93,7 @@ public class AMFConfigPackage {
         getRoot().appendChild(filho);
         filho.appendChild(doc.createTextNode(Integer.toString(getPackageID())));
         filho = doc.createElement("PackageVersion");
+        
         getRoot().appendChild(filho);
         filho.appendChild(doc.createTextNode(Integer.toString(getPackageVersion())));
         if (getEffectivityDateAndTime() != null) {
@@ -200,12 +201,14 @@ public class AMFConfigPackage {
     }
 
     public void addMeasurementRequestSet(Document doc) {
+
         for (MeasurementRequestSet m : getMeasurementRequestSets()) {
             Element mrs = doc.createElement("MeasurementRequestSet");
             getRoot().appendChild(mrs);
-            Element acce = doc.createElement("DefaultAllContentClassExceptList");
-            mrs.appendChild(acce);
+
             if (m.getDefaultAllContentClassExceptList() != null) {
+                Element acce = doc.createElement("DefaultAllContentClassExceptList");
+                mrs.appendChild(acce);
                 for (ContentClassDomain c : m.getDefaultAllContentClassExceptList().getContentClassDomain()) {
                     Element ccd = doc.createElement("ContentClassDomain");
                     acce.appendChild(ccd);
@@ -396,10 +399,11 @@ public class AMFConfigPackage {
     }
 
     private String timeStampToString(Timestamp t) {
-        String s = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(t);
+        String s = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(t);
         return s;
     }
-     private String timeStampToString(Time t) {
+
+    private String timeStampToString(Time t) {
         String s = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(t);
         return s;
     }

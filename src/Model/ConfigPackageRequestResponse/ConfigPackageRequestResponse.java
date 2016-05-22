@@ -6,6 +6,8 @@
 package Model.ConfigPackageRequestResponse;
 
 import java.io.File;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.parsers.DocumentBuilder;
@@ -19,6 +21,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.InputSource;
 
 /**
  *
@@ -35,49 +38,52 @@ public class ConfigPackageRequestResponse {
     private Element raiz;
     private static DocumentBuilderFactory docFactory;
 
-    public void createConfigPkgRequestResponseXML() {
+    public String  createConfigPkgRequestResponseXML() {
 
         docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = null;
         try {
             docBuilder = docFactory.newDocumentBuilder();
             Document doc = docBuilder.newDocument();
+
             raiz = doc.createElement("ConfigPackageRequestResponse");
             doc.appendChild(raiz);
             addElementosRaiz(doc);
             addImmediateMeasurement(doc);
             addFutureMeasurementDirective(doc);
-            writeXML(doc);
+            return writeXML(doc);
 
         } catch (ParserConfigurationException ex) {
-            Logger.getLogger(ConfigPackageRequestResponse.class
-                    .getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Erro ao criar xml");
+            return null;
         }
 
     }
 
-    public static void writeXML(Document doc) {
+    public static String writeXML(Document doc) {
         TransformerFactory transformerFactory
                 = TransformerFactory.newInstance();
-        Transformer transformer = null;
+        Transformer transformer;
         try {
             transformer = transformerFactory.newTransformer();
-        } catch (TransformerConfigurationException ex) {
-        }
-        DOMSource source = new DOMSource(doc);
-        StreamResult result
-                = new StreamResult(new File("C:\\Users\\Principal\\Desktop\\ConfigPackageRequestResponse.xml"));
-        try {
+            DOMSource source = new DOMSource(doc);
+            //create a StringWriter for the output
+            StringWriter outWriter = new StringWriter();
+            StreamResult result = new StreamResult(outWriter);
+           
             transformer.transform(source, result);
+            StringBuffer sb = outWriter.getBuffer();
+            String finalstring = sb.toString();
+            
+           
+            return finalstring;
         } catch (TransformerException ex) {
+            System.out.println("Erro ao escrever xml");
+            return null;
         }
+
         // Output to console for testing
-        StreamResult consoleResult
-                = new StreamResult(System.out);
-        try {
-            transformer.transform(source, consoleResult);
-        } catch (TransformerException ex) {
-        }
+ 
     }
 
     public void addElementosRaiz(Document doc) {
@@ -90,11 +96,16 @@ public class ConfigPackageRequestResponse {
     public void addImmediateMeasurement(Document doc) {
         if (immediateMeasurementDirective != null) {
             Element im = doc.createElement("ImmediateMeasurementDirective");
+            immediateMeasurementDirective.setCode(Code.ConfPackagePresent);
             Element filho;
             filho = doc.createElement("Code");
-            im.appendChild(filho);
-            filho.appendChild(doc.createTextNode(Integer.toString(immediateMeasurementDirective.getCode().getCode())));
+            if (filho != null) {
+                filho.appendChild(doc.createTextNode(Integer.toString(immediateMeasurementDirective.getCode().getCode())));
+                im.appendChild(filho);
+            }
+
             if (immediateMeasurementDirective.getaMFConfigPackage() != null) {
+
                 im = immediateMeasurementDirective.getaMFConfigPackage().createAmfConfig(doc, im);
 
             }

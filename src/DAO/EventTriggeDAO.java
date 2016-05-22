@@ -7,9 +7,11 @@ package DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,5 +41,24 @@ public class EventTriggeDAO {
             Logger.getLogger(EventTriggeDAO.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
+    }
+
+    public List<String> selectLastEventTriggerByConfigId(int id, Connection conn) {
+        Statement s;
+        List<String> list = new ArrayList<>();
+        try {
+            s = conn.createStatement();
+            String sql = "SELECT event from eventtrigger where AMFCapabilityProfile_id ='" + id + "'";
+            ResultSet rs = s.executeQuery(sql);
+            while(rs.next()){
+                list.add(rs.getString(1));
+            }
+            return list;
+        } catch (SQLException ex) {
+            Logger.getLogger(EventTriggeDAO.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+        
+
     }
 }

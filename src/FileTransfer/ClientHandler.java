@@ -7,6 +7,7 @@ package FileTransfer;
 
 import DAO.AMReportPackageDAO;
 import DAO.ConfigPackageRequestDAO;
+import DAO.ConfigpkgRequestResponseDAO;
 import Model.AMFConfigPackage.AMFConfigPackage;
 import Model.AMFConfigPackage.MeasurementRequestSet;
 import Model.AMReportPackage.AMReportPackage;
@@ -86,6 +87,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
 import java.net.Socket;
 import java.sql.Time;
 import java.sql.Timestamp;
@@ -104,6 +106,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -113,44 +116,61 @@ import org.xml.sax.SAXException;
 public class ClientHandler extends Thread {
 
     protected Socket incoming;
+    private final ServerConfig serverConfig;
 
-    public ClientHandler(Socket incoming) {
+    public ClientHandler(Socket incoming, ServerConfig serverConfig) {
         this.incoming = incoming;
+        this.serverConfig = serverConfig;
     }
 
     @Override
     public void run() {
 
         try {
+
             InputStream in = incoming.getInputStream();
             InputStreamReader isr = new InputStreamReader(in);
             BufferedReader reader = new BufferedReader(isr);
 
-            File f1 = new File("a.xml");
-            FileOutputStream out = new FileOutputStream(f1);
+            // File f1 = new File("a.xml");
+            //FileOutputStream out = new FileOutputStream(f1);
+            String aux = "";
+
+            StringBuilder builder = new StringBuilder();
+
             int c;
-            while ((c = in.read()) != 0) {
-                out.write(c);
+            while ((c = reader.read()) != 0) {
+
+                builder.append((char) c);
             }
-            parsingXML("a");
-            out.close();
+
+            String text = builder.toString();
+
+            InputSource is = new InputSource(new StringReader(text));
+           // while ((c = in.read()) != 0) {
+
+            //}
+            System.out.println(text);
+            parsingXML(is);
+            //out.close();
             incoming.close();
+           
         } catch (Exception e) {
         }
     }
 
-    void parsingXML(String name) {
+    void parsingXML(InputSource in) {
 
         try {
-            File inputFile = new File(name + ".xml");
+            // File inputFile = new File(name + ".xml");
             DocumentBuilderFactory dbFactory
                     = DocumentBuilderFactory.newInstance();
-            Node nNode;
-            NodeList nList;
+
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(inputFile);
+            Document doc = dBuilder.parse(in);
             doc.getDocumentElement().normalize();
             if ("ConfigPackageRequest".equals(doc.getDocumentElement().getNodeName())) {
+
                 parsingConfigurationRequest(doc);
             }
             if ("AMReportPackage".equals(doc.getDocumentElement().getNodeName())) {
@@ -301,7 +321,7 @@ public class ClientHandler extends Thread {
 
     private Timestamp StringToTimeStamp(String value) {
         try {
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
             Date parsedDate = dateFormat.parse(value);
             Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
             return timestamp;
@@ -312,18 +332,10 @@ public class ClientHandler extends Thread {
 
     }
 
-    boolean verifiyCapabilities(ConfigPackageRequest configPckRequest) {
-        FileReader config;
-        try {
-            config = new FileReader("config.txt");
-            BufferedReader lerArq = new BufferedReader(config);
-            String linha;
-
-            linha = lerArq.readLine();
+    private boolean verifiyCapabilities(ConfigPackageRequest configPckRequest) {
+        synchronized (this.serverConfig) {
             int counter = 0;
-            while (linha != null) {
-                String c[] = linha.split(":");
-                String aux[] = c[1].split(",");
+            while (counter < 6) {
 
                 boolean lock;
 
@@ -331,10 +343,10 @@ public class ClientHandler extends Thread {
                     case 0:
                         lock = false;
 
-                        for (String s : aux) {
+                        for (String s : serverConfig.getTransportProtocol()) {
                             if (configPckRequest.getAmf().getTransportCapabilitiesList().getTransportProtocolMode().contains(s)) {
                                 lock = true;
-                                System.out.println(s);
+                                
 
                                 break;
                             }
@@ -348,10 +360,10 @@ public class ClientHandler extends Thread {
 
                     case 1:
                         lock = false;
-                        for (String s : aux) {
+                        for (String s : serverConfig.getCryptographicProtocol()) {
                             if (configPckRequest.getAmf().getSecurityCapabilities().getCryptographicProtocol().contains(s)) {
                                 lock = true;
-                                System.out.println(s);
+                                
 
                                 break;
                             }
@@ -365,10 +377,10 @@ public class ClientHandler extends Thread {
 
                     case 2:
                         lock = false;
-                        for (String s : aux) {
+                        for (String s : serverConfig.getPermissionMode()) {
                             if (configPckRequest.getAmf().getPermissionOperationModes().getPermissionMode().contains(s)) {
                                 lock = true;
-                                System.out.println(s);
+                                
                                 break;
                             }
 
@@ -382,10 +394,10 @@ public class ClientHandler extends Thread {
                     case 3:
                         lock = false;
 
-                        for (String s : aux) {
+                        for (String s : serverConfig.getConfigurationMode()) {
                             if (configPckRequest.getAmf().getConfigurationPackageDelivery().getConfigurationMode().contains(s)) {
                                 lock = true;
-                                System.out.println(s);
+                                
 
                                 break;
                             }
@@ -402,7 +414,7 @@ public class ClientHandler extends Thread {
                         lock = false;
                         System.out.println(configPckRequest.getAmf().getReportDeliveryModes().getDeliveryMode().get(0));
 
-                        for (String s : aux) {
+                        for (String s : serverConfig.getDeliveryMode()) {
 
                             if (configPckRequest.getAmf().getReportDeliveryModes().getDeliveryMode().contains(s)) {
                                 lock = true;
@@ -418,10 +430,10 @@ public class ClientHandler extends Thread {
                         }
                     case 5:
                         lock = false;
-                        for (String s : aux) {
+                        for (String s : serverConfig.getCompression()) {
                             if (configPckRequest.getAmf().getCompression().contains(s)) {
                                 lock = true;
-                                System.out.println(s);
+                                
 
                                 break;
                             }
@@ -434,14 +446,10 @@ public class ClientHandler extends Thread {
                         }
                 }
                 counter++;
-                linha = lerArq.readLine();
+
             }
-
-        } catch (IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-
+            return true;
         }
-        return true;
     }
 
     private void parsingMeasurementReport(Document doc) {
@@ -499,8 +507,9 @@ public class ClientHandler extends Thread {
                  } catch (DOMException | ParseException excpt) {//this generic but you can control another types of exception
                  System.err.println(excpt.getMessage());
                  }*/
-                // mr.setMeasurementReportTriggerTime(StringToTimeStamp("MeasurementReportTime", nNode));
-                System.out.println("time");
+                /*String value = e.getElementsByTagName("MeasurementReportTime").item(0).getTextContent();
+                mr.setMeasurementReportTriggerTime(StringToTimeStamp(value));
+                */
                 if (e.getElementsByTagName("DisplayStatus").item(0) != null) {
                     mr.setDisplayStatus(e.getElementsByTagName("DisplayStatus").item(0).getTextContent());
                 }
@@ -607,7 +616,7 @@ public class ClientHandler extends Thread {
                 nNode = e.getElementsByTagName("VideoResize").item(0);
                 if (nNode != null) {
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
+                         
                         VideoResize vr = new VideoResize();
                         mr.setVideoResize(vr);
                         vr.setServiceInstanceID(Integer.parseInt(((Element) nNode).getElementsByTagName("ServiceInstanceID").item(0).getTextContent()));
@@ -780,8 +789,8 @@ public class ClientHandler extends Thread {
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
                         UserPresent up = new UserPresent();
                         mr.getUserPresent().add(up);
-                        String value = ((Element) nNode).getElementsByTagName("PresenceTime").item(0).getTextContent();
-                        up.setPresenceTime(StringToTimeStamp(value));
+                        String valor = ((Element) nNode).getElementsByTagName("PresenceTime").item(0).getTextContent();
+                        up.setPresenceTime(StringToTimeStamp(valor));
                         up.setPresenceMethod(((Element) nNode).getElementsByTagName("PresenceMethod").item(0).getTextContent());
                         up.setPresenceConfidence(Float.parseFloat(((Element) nNode).getElementsByTagName("PresenceConfidence").item(0).getTextContent()));
                     }
@@ -843,7 +852,8 @@ public class ClientHandler extends Thread {
                                 if (n.getNodeType() == Node.ELEMENT_NODE) {
                                     ControlledUserInfoDate ctrlUserInfoDate = new ControlledUserInfoDate();
                                     ctrlUserInfoDate.setControlledUserInfoType(((Element) n).getFirstChild().getNodeName());
-                                    //ctrlUserInfoDate.setControlledUserInfoDateValue(StringToTimeStamp(((Element) n).getFirstChild().getNodeName(), n));
+                                    String valor = ((Element) n).getFirstChild().getTextContent();
+                                    ctrlUserInfoDate.setControlledUserInfoDateValue(StringToTimeStamp((valor)));
                                     uic.getControlledUserInfoDate().add(ctrlUserInfoDate);
                                 }
                             }
@@ -948,6 +958,7 @@ public class ClientHandler extends Thread {
             }
 
         }
+       
 
         if (new AMReportPackageDAO().insertAMReportPckg(amReportPckg)) {
             System.out.println("ok");
@@ -986,13 +997,15 @@ public class ClientHandler extends Thread {
         configPckgRequest.setAmf(parsingAMF(doc));
 
         if (verifiyCapabilities(configPckgRequest)) {
-            if (new ConfigPackageRequestDAO().insertConfigPkg(configPckgRequest)) {
+            int c;
+            if ((c = new ConfigPackageRequestDAO().insertConfigPkg(configPckgRequest)) != -1) {
                 System.out.println("ok");
+                parsingConfigPckgRequestResponse(c);
             }
         }
     }
 
-    private void parsingConfigPckgRequestResponse() {
+    synchronized private void parsingConfigPckgRequestResponse(int id) {
 
         try {
             File file = new File("ConfigPackageRequestResponse.xml");
@@ -1013,47 +1026,71 @@ public class ClientHandler extends Thread {
             }
             nNode = doc.getElementsByTagName("ImmediateMeasurementDirective").item(0);
             if (nNode != null) {
-                Directive immediateMeasurement = new Directive();
-                configPckgResponse.setImmediateMeasurementDirective(immediateMeasurement);
-                nNode = ((Element) nNode).getElementsByTagName("AMFConfigPackage").item(0);
-                if (nNode != null) {
-                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                        AMFConfigPackage amfconfig = new AMFConfigPackage();
-                        immediateMeasurement.setaMFConfigPackage(amfconfig);
-                        nNode = ((Element) nNode).getElementsByTagName("EffectivityDateAndTime").item(0);
-                        if (nNode != null) {
-                            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                                String value = nNode.getTextContent();
-                                amfconfig.setEffectivityDateAndTime(StringToTimeStamp(value));
-                            }
-                        }
-                        nList = doc.getElementsByTagName("MeasurementRequestSet");
-                        for (int i = 0; i < nList.getLength(); i++) {
-                            nNode = nList.item(i);
-                            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-                                MeasurementRequestSet mrs = new MeasurementRequestSet();
-                                amfconfig.getMeasurementRequestSets().add(mrs);
-                                NodeList auxList = ((Element) nNode).getElementsByTagName("MeasurementRequest");
-                                for (int j = 0; j < auxList.getLength(); j++) {
-                                    Node node = auxList.item(j);
-                                    if (node.getNodeType() == Node.ELEMENT_NODE) {
-                                        MeasurementRequest mr = new MeasurementRequest();
-                                        mrs.getMeasurementRequest().add(mr);
-                                        mr.setMeasurementSchedule(measurementScheduleParsing(((Element) node)));
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Directive immediateMeasurement = new Directive();
+                    configPckgResponse.setImmediateMeasurementDirective(immediateMeasurement);
+                    immediateMeasurement.setaMFConfigPackage(amfConfigPckgParsing(((Element) nNode)));
 
-                                    }
-                                }
-                            }
+                }
+            }
+            nNode = doc.getElementsByTagName("FutureMeasurementDirective").item(0);
+            if (nNode != null) {
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Directive futureMeasurement = new Directive();
+                    configPckgResponse.setFutureMeasurementDirective(futureMeasurement);
+                    futureMeasurement.setaMFConfigPackage(amfConfigPckgParsing(((Element) nNode)));
+                }
+            }
+            configPckgResponse = new ConfigpkgRequestResponseDAO().insertConfigpkgRequestResponse(configPckgResponse, id);
+            String xml = configPckgResponse.createConfigPkgRequestResponseXML();
+            PrintWriter output = new PrintWriter(incoming.getOutputStream(),true);
+            
+            output.println(xml);
+            output.println('\0');
+        } catch (ParserConfigurationException | SAXException | IOException ex) {
+            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
+    }
+
+    private AMFConfigPackage amfConfigPckgParsing(Element pai) {
+        Node nNode = ((Element) pai).getElementsByTagName("AMFConfigPackage").item(0);
+        AMFConfigPackage amfconfig = null;
+        if (nNode != null) {
+            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                amfconfig = new AMFConfigPackage();
+                Node no = ((Element) nNode).getElementsByTagName("EffectivityDateAndTime").item(0);
+                if (no != null) {
+                    if (no.getNodeType() == Node.ELEMENT_NODE) {
+                        String value = no.getTextContent();
+                        amfconfig.setEffectivityDateAndTime(StringToTimeStamp(value));
+                    }
+                }
+                NodeList nList = ((Element) nNode).getElementsByTagName("MeasurementRequestSet");
+                for (int i = 0; i < nList.getLength(); i++) {
+                    no = nList.item(i);
+                    if (no.getNodeType() == Node.ELEMENT_NODE) {
+                        MeasurementRequestSet mrs = new MeasurementRequestSet();
+                        amfconfig.getMeasurementRequestSets().add(mrs);
+                        NodeList auxList = ((Element) no).getElementsByTagName("MeasurementRequest");
+                        for (int j = 0; j < auxList.getLength(); j++) {
+                            Node node = auxList.item(j);
+                            if (node.getNodeType() == Node.ELEMENT_NODE) {
+                                MeasurementRequest mr = new MeasurementRequest();
+                                mrs.getMeasurementRequest().add(mr);
+                                mr.setMeasurementSchedule(measurementScheduleParsing(((Element) node)));
+                                mr.setMeasurementDeliverySchedule(measurementDeliveryParsing(((Element) node)));
+                                mr.setLinearTVQualifier(linearTvQualifierParsing(((Element) node)));
+
+                            }
                         }
                     }
 
                 }
             }
-        } catch (ParserConfigurationException | SAXException | IOException ex) {
-            Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-        }
 
+        }
+        return amfconfig;
     }
 
     private ArrayList<MeasurementSchedule> measurementScheduleParsing(Element pai) {
@@ -1123,7 +1160,7 @@ public class ClientHandler extends Thread {
                         for (int k = 0; k < listaNo.getLength(); k++) {
                             Node n = listaNo.item(k);
                             if (n.getNodeType() == Node.ELEMENT_NODE) {
-                                mp.getStartTime().add(stringTime(((Element) n).getTextContent()));
+                                mp.getEndTime().add(stringTime(((Element) n).getTextContent()));
                             }
                         }
 
@@ -1169,6 +1206,7 @@ public class ClientHandler extends Thread {
                         nodelist = ((Element) no).getElementsByTagName("SampleSet");
                         for (int j = 0; j < nodelist.getLength(); j++) {
                             Node n = nodelist.item(j);
+                           
                             if (n.getNodeType() == Node.ELEMENT_NODE) {
                                 SampleSetTimeTrigger sampleSetTT = new SampleSetTimeTrigger();
                                 timeTrigger.getSampleSet().add(sampleSetTT);
@@ -1308,19 +1346,19 @@ public class ClientHandler extends Thread {
                     }
 
                 }
-                
-                node = ((Element)nNode).getElementsByTagName("ChannelList").item(0);
-                if(node != null){
-                    if(node.getNodeType() == Node.ELEMENT_NODE){
+
+                node = ((Element) nNode).getElementsByTagName("ChannelList").item(0);
+                if (node != null) {
+                    if (node.getNodeType() == Node.ELEMENT_NODE) {
                         ChannelQualifier cq = new ChannelQualifier();
                         ltq.setChannelQualifier(cq);
                         ChannelList cl = new ChannelList();
                         cq.setChannelList(cl);
-                        NodeList list = ((Element)node).getElementsByTagName("ServiceIdentifier");
-                        for(int j = 0; j < list.getLength(); j++){
+                        NodeList list = ((Element) node).getElementsByTagName("ServiceIdentifier");
+                        for (int j = 0; j < list.getLength(); j++) {
                             Node n = list.item(j);
-                            if(n.getNodeType() == Node.ELEMENT_NODE){
-                                cl.getServiceIdentifier().add(((Element)n).getTextContent());
+                            if (n.getNodeType() == Node.ELEMENT_NODE) {
+                                cl.getServiceIdentifier().add(((Element) n).getTextContent());
                             }
                         }
                     }

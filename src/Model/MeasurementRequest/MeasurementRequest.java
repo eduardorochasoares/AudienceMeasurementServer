@@ -29,8 +29,6 @@ public class MeasurementRequest {
     private List<MeasurementSchedule> measurementSchedule = new ArrayList<>();
     private MeasurementDeliverySchedule measurementDeliverySchedule;
 
-   
-
     /**
      * @return the measurementRequestID
      */
@@ -95,12 +93,14 @@ public class MeasurementRequest {
 
     public void addMensurementRequest(Document doc) {
         Element filho = doc.createElement("MeasurementRequestID");
+        
         getRootElement().appendChild(filho);
         filho.appendChild(doc.createTextNode(Integer.toString(this.getMeasurementRequestID())));
 
     }
 
     public void addLinearTvQualifier(Document doc) {
+
         Element ltq = doc.createElement("LinearTvQualifier");
         getRootElement().appendChild(ltq);
         Element filho;
@@ -148,10 +148,11 @@ public class MeasurementRequest {
                 }
             }
         }
-
-        filho = doc.createElement("ChannelChangeFilter");
-        ltq.appendChild(filho);
-        filho.appendChild(doc.createTextNode(Integer.toString(getLinearTVQualifier().getChannelChangeFilter())));
+        if (getLinearTVQualifier().getChannelChangeFilter() != 0) {
+            filho = doc.createElement("ChannelChangeFilter");
+            ltq.appendChild(filho);
+            filho.appendChild(doc.createTextNode(Integer.toString(getLinearTVQualifier().getChannelChangeFilter())));
+        }
 
     }
 
@@ -214,13 +215,17 @@ public class MeasurementRequest {
                     Element event = doc.createElement("Event");
                     eventTrigger.appendChild(event);
                     event.appendChild(doc.createTextNode(e.getEvent()));
-                    Element son = doc.createElement("EventParameter1");
-                    event.appendChild(son);
-                    son.appendChild(doc.createTextNode(e.getEventParameter1()));
+                    if (e.getEventParameter1() != null) {
+                        Element son = doc.createElement("EventParameter1");
+                        event.appendChild(son);
+                        son.appendChild(doc.createTextNode(e.getEventParameter1()));
+                    }
                 }
-                Element aux = doc.createElement("Priority");
-                eventTrigger.appendChild(aux);
-                aux.appendChild(doc.createTextNode(Integer.toString(et.getPriority().getPriority())));
+                if (et.getPriority() != null) {
+                    Element aux = doc.createElement("Priority");
+                    eventTrigger.appendChild(aux);
+                    aux.appendChild(doc.createTextNode(Integer.toString(et.getPriority().getPriority())));
+                }
 
             }
             Element aux;
@@ -277,12 +282,15 @@ public class MeasurementRequest {
                     }
 
                 }
-                aux = doc.createElement("Priority");
-                sst.appendChild(aux);
-                aux.appendChild(doc.createTextNode(Integer.toString(m.getServiceStartTrigger().getPriorityServiceStart().getPriority())));
+                if (m.getServiceStartTrigger().getPriorityServiceStart() != null) {
+                    aux = doc.createElement("Priority");
+                    sst.appendChild(aux);
+                    aux.appendChild(doc.createTextNode(Integer.toString(m.getServiceStartTrigger().getPriorityServiceStart().getPriority())));
+                }
 
             }
         }
+        
 
     }
 
