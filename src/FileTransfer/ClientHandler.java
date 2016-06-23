@@ -915,7 +915,6 @@ public class ClientHandler extends Thread {
                 nNode = e.getElementsByTagName("ChannelStart").item(0);
                 if (nNode != null) {
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
-
                         ChannelStart cs = new ChannelStart();
                         mr.setChannelStart(cs);
                         cs.setControlDevice(((Element) nNode).getElementsByTagName("ControlDevice").item(0).getTextContent());
@@ -927,8 +926,9 @@ public class ClientHandler extends Thread {
                         cs.setObscuration(((Element) nNode).getElementsByTagName("Obscuration").item(0).getTextContent());
                     }
                 }
+                nNode = e.getElementsByTagName("ChannelStop").item(0);
                 if (nNode != null) {
-                    nNode = e.getElementsByTagName("ChannelStop").item(0);
+                    
                     if (nNode.getNodeType() == Node.ELEMENT_NODE) {
 
                         ChannelStop channelStop = new ChannelStop();

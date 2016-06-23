@@ -29,7 +29,6 @@ public class ChannelStartDAO {
             sql = "Insert into channelstart(controlDevice, startNavMethod, previousServiceInstanceID, serviceIdentifier, viewMode, obscuration, serviceInstanceID, measurementReport_id) VALUES (?,?,?,?,?,?,?,?)";
 
             PreparedStatement st = conn.prepareStatement(sql);
-            
             st.setString(1, channelStart.getControlDevice());
             st.setString(2, channelStart.getStartNavMethod());
             st.setInt(3, channelStart.getPreviousServiceInstanceID());

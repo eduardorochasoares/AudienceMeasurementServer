@@ -11,9 +11,9 @@
 <MeasurementRequest>
 <MeasurementSchedule>
 <MeasurementPeriod>
-<DayOfTheWeek>0</DayOfTheWeek>
-<StartTime>00:00:00</StartTime>
-<EndTime>23:59:59</EndTime>
+<DayOfTheWeek>1</DayOfTheWeek>
+<StartTime>00:10:00</StartTime>
+<EndTime>00:50:00</EndTime>
 </MeasurementPeriod>
 <EventTrigger>	
 <Event>AudioVolume</Event>
@@ -71,9 +71,9 @@
 <MeasurementRequest>
 <MeasurementSchedule>
 <MeasurementPeriod>
-<DayOfTheWeek>0</DayOfTheWeek>
-<StartTime>00:00:00</StartTime>
-<EndTime>23:59:59</EndTime>
+<DayOfTheWeek>7</DayOfTheWeek>
+<StartTime>10:09:00</StartTime>
+<EndTime>23:59:00</EndTime>
 </MeasurementPeriod>
 <EventTrigger>
 <Event>AudioVolume</Event>

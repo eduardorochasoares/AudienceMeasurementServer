@@ -57,7 +57,8 @@ public class MeasurementReportDAO {
                     
                     if(mr.getChannelStart() != null){
                         ChannelStartDAO csDao = new ChannelStartDAO();
-                        if(!csDao.insertChannelStart(mr.getChannelStart(), key, conn)){
+                        if(!csDao.insertChannelStart(mr.getChannelStart(), rs.getInt(1), conn)){
+                            
                             return false;
                         }
                     }
