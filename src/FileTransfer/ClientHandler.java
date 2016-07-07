@@ -156,6 +156,11 @@ public class ClientHandler extends Thread {
             incoming.close();
            
         } catch (Exception e) {
+            try {
+                incoming.close();
+            } catch (IOException ex) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -181,6 +186,13 @@ public class ClientHandler extends Thread {
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex.getMessage());
+            try {
+                incoming.close();
+            } catch (IOException ex1) {
+                Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            
+            
         }
 
     }
