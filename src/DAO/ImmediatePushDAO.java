@@ -22,7 +22,7 @@ public class ImmediatePushDAO {
         try {
             
 
-            sql = "Insert into immeadiatepush(measReportnumbnypush,  maxTimeBetweenDelivery, measurementRequest_id) VALUES (?,?,?)";
+            sql = "Insert into immediatepush(measReportnumbnypush,  maxTimeBetweenDelivery, measurementRequest_id) VALUES (?,?,?)";
 
             PreparedStatement st = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             st.setInt(1, immediatePush.getMeasurementReportNumberByPush());
