@@ -69,6 +69,13 @@ public class MeasurementReportDAO {
                             return false;
                         }
                     }
+                    if(mr.getVodEvents() != null){
+                     
+                        VoDEventsDAO vodDao = new VoDEventsDAO();
+                        if(!vodDao.insertVoDEvents(mr.getVodEvents(), rs.getInt(1), conn)){
+                            return false;
+                        }
+                    }
                 } else {
                     return false;
                 }

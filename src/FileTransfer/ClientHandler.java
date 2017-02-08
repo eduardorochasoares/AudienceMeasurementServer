@@ -44,6 +44,7 @@ import Model.AMReportPackage.UserPresent;
 import Model.AMReportPackage.VideoObscure;
 import Model.AMReportPackage.VideoResize;
 import Model.AMReportPackage.VideoZoom;
+import Model.AMReportPackage.VoDEvents;
 import Model.ConfigPackageRequestResponse.ConfigPackageRequestResponse;
 import Model.ConfigPackageRequestResponse.Directive;
 import Model.MeasurementRequest.AllContentClassExceptList;
@@ -162,6 +163,8 @@ public class ClientHandler extends Thread {
                 Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        this.interrupt();
+
     }
 
     void parsingXML(InputSource in) {
@@ -967,6 +970,21 @@ public class ClientHandler extends Thread {
                     cp.setServiceInstanceID(Integer.parseInt(((Element) nodeAux).getElementsByTagName("ServiceInstanceID").item(0).getTextContent()));
 
                 }
+                nNode = e.getElementsByTagName("VoDEvents").item(0);
+                if(nNode != null){
+                    if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                        System.out.println("VODEVENTS");
+                        VoDEvents vod = new VoDEvents();
+                       
+                        vod.setEvent(((Element) nNode).getElementsByTagName("Name").item(0).getTextContent());
+                        vod.setServiceIdentifier(((Element) nNode).getElementsByTagName("ServiceIdentifier").item(0).getTextContent());
+                        vod.setServiceInstanceID(Integer.parseInt(((Element) nNode).getElementsByTagName("ServiceInstanceID").item(0).getTextContent()));
+                       
+                        mr.setVodEvents(vod);
+                     
+
+                    }
+                }
             }
 
         }
@@ -1056,7 +1074,7 @@ public class ClientHandler extends Thread {
             configPckgResponse = new ConfigpkgRequestResponseDAO().insertConfigpkgRequestResponse(configPckgResponse, id);
             String xml = configPckgResponse.createConfigPkgRequestResponseXML();
             PrintWriter output = new PrintWriter(incoming.getOutputStream(),true);
-            
+            System.out.println("birrl");
             output.println(xml);
             output.println('\0');
         } catch (ParserConfigurationException | SAXException | IOException ex) {

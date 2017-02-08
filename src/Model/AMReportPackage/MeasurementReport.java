@@ -37,6 +37,7 @@ public class MeasurementReport {
     private ChannelStart channelStart;
     private ChannelStop channelStop;
     private ArrayList<ChannelPlaying> channelPlaying = new ArrayList<>();
+    private VoDEvents vodEvents;
 
     /**
      * @return the measurementRequestID
@@ -358,6 +359,20 @@ public class MeasurementReport {
      */
     public void setChannelPlaying(ArrayList<ChannelPlaying> channelPlaying) {
         this.channelPlaying = channelPlaying;
+    }
+
+    /**
+     * @return the vodEvents
+     */
+    public VoDEvents getVodEvents() {
+        return this.vodEvents;
+    }
+
+    /**
+     * @param vodEvents the vodEvents to set
+     */
+    public void setVodEvents(VoDEvents vodEvents) {
+        this.vodEvents = vodEvents;
     }
 
 }
