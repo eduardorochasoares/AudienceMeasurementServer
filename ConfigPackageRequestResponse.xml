@@ -22,6 +22,9 @@
 <SampleSet>
 <SampleSetIdentifier>ChannelPlaying</SampleSetIdentifier>
 </SampleSet>
+<SampleSet>
+<SampleSetIdentifier>VideoPlaying</SampleSetIdentifier>
+</SampleSet>
 <Periodicity>5</Periodicity>
 <NothingNewReportMode>0</NothingNewReportMode>
 </TimeTrigger>

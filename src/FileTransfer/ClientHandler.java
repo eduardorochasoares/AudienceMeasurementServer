@@ -35,13 +35,14 @@ import Model.AMReportPackage.STBInformation;
 import Model.AMReportPackage.StorageCongestionImpactedService;
 import Model.AMReportPackage.TDLocation;
 import Model.AMReportPackage.TVInformation;
-import Model.AMReportPackage.UserBiographicInformation;
+
 import Model.AMReportPackage.UserIDGenericInfo;
 import Model.AMReportPackage.UserIDInfo;
 import Model.AMReportPackage.UserIdBioInfo;
 import Model.AMReportPackage.UserInfoChange;
 import Model.AMReportPackage.UserPresent;
 import Model.AMReportPackage.VideoObscure;
+import Model.AMReportPackage.VideoPlaying;
 import Model.AMReportPackage.VideoResize;
 import Model.AMReportPackage.VideoZoom;
 import Model.AMReportPackage.VoDEvents;
@@ -79,9 +80,7 @@ import Model.tdElementsXML.SecurityCapabilities;
 import Model.tdElementsXML.TransportCapabilitiesList;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -90,6 +89,9 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -126,7 +128,7 @@ public class ClientHandler extends Thread {
 
     @Override
     public void run() {
-
+        long startTime = System.nanoTime();
         try {
 
             InputStream in = incoming.getInputStream();
@@ -151,11 +153,22 @@ public class ClientHandler extends Thread {
            // while ((c = in.read()) != 0) {
 
             //}
-            System.out.println(text);
+           //System.out.println(text);
             parsingXML(is);
             //out.close();
             incoming.close();
-           
+            long finish = System.nanoTime();
+            float po = (float) Math.pow(10, -9);
+            
+            float time = po * (finish - startTime);
+            String timeString = Float.toString(time);
+            //System.out.println("tempo de execução: " + timeString+ "s");
+            try{
+                Files.write(Paths.get("time.txt"), (timeString + "\n").getBytes(), StandardOpenOption.APPEND);
+                
+            } catch (IOException e) {
+                // do something
+            }
         } catch (Exception e) {
             try {
                 incoming.close();
@@ -188,7 +201,7 @@ public class ClientHandler extends Thread {
 
         } catch (ParserConfigurationException | SAXException | IOException ex) {
             Logger.getLogger(ClientHandler.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println(ex.getMessage());
+            //System.out.println(ex.getMessage());
             try {
                 incoming.close();
             } catch (IOException ex1) {
@@ -427,7 +440,7 @@ public class ClientHandler extends Thread {
 
                     case 4:
                         lock = false;
-                        System.out.println(configPckRequest.getAmf().getReportDeliveryModes().getDeliveryMode().get(0));
+                        //System.out.println(configPckRequest.getAmf().getReportDeliveryModes().getDeliveryMode().get(0));
 
                         for (String s : serverConfig.getDeliveryMode()) {
 
@@ -468,7 +481,7 @@ public class ClientHandler extends Thread {
     }
 
     private void parsingMeasurementReport(Document doc) {
-        System.out.println("Documento de Medicao");
+        //System.out.println("Documento de Medicao");
         AMReportPackage amReportPckg = new AMReportPackage();
         Node nNode;
         NodeList nList;
@@ -960,7 +973,7 @@ public class ClientHandler extends Thread {
 
                     Node nodeAux = nl.item(j);
 
-                    System.out.println(j);
+                    //System.out.println(j);
                     ChannelPlaying cp = new ChannelPlaying();
 
                     mr.getChannelPlaying().add(cp);
@@ -970,10 +983,22 @@ public class ClientHandler extends Thread {
                     cp.setServiceInstanceID(Integer.parseInt(((Element) nodeAux).getElementsByTagName("ServiceInstanceID").item(0).getTextContent()));
 
                 }
+                nl = e.getElementsByTagName("VideoPlaying");
+                for (int j = 0; j < nl.getLength(); j++){
+                    Node nodeAux = nl.item(j);
+                    VideoPlaying vp = new VideoPlaying();
+                    mr.getVideoPlaying().add(vp);
+                    vp.setServiceIdentifier(((Element) 
+                                nodeAux).getElementsByTagName("ServiceIdentifier").item(0).getTextContent());
+                    vp.setServiceInstanceID(Integer.parseInt(((Element)
+                            nodeAux).getElementsByTagName("ServiceInstanceID").item(0).getTextContent()));
+                    
+                }
+                
                 nNode = e.getElementsByTagName("VoDEvents").item(0);
                 if(nNode != null){
                     if(nNode.getNodeType() == Node.ELEMENT_NODE){
-                        System.out.println("VODEVENTS");
+                        //System.out.println("VODEVENTS");
                         VoDEvents vod = new VoDEvents();
                        
                         vod.setEvent(((Element) nNode).getElementsByTagName("Name").item(0).getTextContent());
@@ -998,7 +1023,7 @@ public class ClientHandler extends Thread {
     }
 
     private void parsingConfigurationRequest(Document doc) {
-        System.out.println("é arquivo de Configuracao");
+        //System.out.println("é arquivo de Configuracao");
         ConfigPackageRequest configPckgRequest = new ConfigPackageRequest();
         NodeList nList = doc.getElementsByTagName("ConfigPackageRequest");
 
@@ -1074,7 +1099,7 @@ public class ClientHandler extends Thread {
             configPckgResponse = new ConfigpkgRequestResponseDAO().insertConfigpkgRequestResponse(configPckgResponse, id);
             String xml = configPckgResponse.createConfigPkgRequestResponseXML();
             PrintWriter output = new PrintWriter(incoming.getOutputStream(),true);
-            System.out.println("birrl");
+            
             output.println(xml);
             output.println('\0');
         } catch (ParserConfigurationException | SAXException | IOException ex) {

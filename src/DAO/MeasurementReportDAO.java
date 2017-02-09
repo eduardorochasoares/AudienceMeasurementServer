@@ -54,6 +54,9 @@ public class MeasurementReportDAO {
                     if(!new ChannelPlayingDAO().insertChannelPlaying(mr.getChannelPlaying(), rs.getInt(1), conn)){
                         return false;
                     }
+                    if(!new VideoPlayingDAO().insertVideoPlaying(mr.getVideoPlaying(), rs.getInt(1), conn)){
+                        return false;
+                    }
                     
                     if(mr.getChannelStart() != null){
                         ChannelStartDAO csDao = new ChannelStartDAO();
